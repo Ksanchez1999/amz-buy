@@ -1,0 +1,49 @@
+
+/* =======================================
+								VARIABLES
+======================================= */
+.modal {
+  /*MODAL*/
+  --z-index: 99999;
+  --opacity: 0.65;
+  --modal-padding: 2rem;
+		
+  /*MODAL-CONTENT*/
+  --max-width: 900px;
+  --max-height: 600px;
+	--content-border-radius: 10px;
+  --content-bg-color: transparent;
+}
+
+
+/* =======================================
+							DOM: MODAL
+======================================= */
+.modal {
+  width: 100vw;
+  height: 100vh;
+  padding: var(--modal-padding);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, var(--opacity));
+  z-index: var(--z-index);
+}
+
+
+/* =======================================
+						DOM: MODAL-CONTENT
+======================================= */
+.modal > div {
+	max-width: var(--max-width);
+	max-height: var(--max-height);
+	overflow-y: auto;
+  border-radius: var(--content-border-radius);
+	background-color: var(--content-bg-color);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+

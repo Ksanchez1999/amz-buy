@@ -1,0 +1,39 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
+
+
+#main{
+  background-color: #111622;
+  position: relative;
+  z-index: 1;
+
+  width: 100vw;
+  height: 100vh;
+  padding: 50px;
+}
+
+
+
+.svg-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  pointer-events: none;
+}
+
+
+.table-container tbody .col-3 > div {
+  display: block;
+  max-width: 200px;
+}
+
+.table-container tbody .col-12 > div {
+  display: block;
+  max-width: 150px;
+}

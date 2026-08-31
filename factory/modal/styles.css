@@ -1,0 +1,92 @@
+/* =======================================
+								GENERAL
+======================================= */
+.modal {
+  /*MODAL-CONTENT*/
+	--content-border-left-width: 8px;
+  --content-border-left-style: solid;
+  --content-border-left-color: #000;
+	
+  /*P*/
+  --p-padding: 4rem;
+  --p-font-size: 3rem;
+  --p-color: #333333;
+}
+
+/* ----- CONTENT ----- */
+.modal > div {
+  border-left-width: var(--content-border-left-width);
+  border-left-style: var(--content-border-left-style);
+  border-left-color: var(--content-border-left-color);
+}
+
+/* ----- P ----- */
+.modal > div > p {
+  margin: 0;
+  padding: var(--p-padding);
+  font-size: var(--p-font-size);
+  color: var(--p-color);
+  text-align: center;
+}
+
+
+
+
+/* =======================================
+								INFO
+======================================= */
+.modal.modal-info {
+  /*MODAL-CONTENT*/
+  --content-bg-color: #f0fdfa;
+  --content-border-left-color: #06b6d4;
+
+  /*P*/
+  --p-font-size: 2.2rem;
+  --p-color: #164e63;
+}
+
+
+
+/* =======================================
+								SUCCESS
+======================================= */
+.modal.modal-success {
+  /*MODAL-CONTENT*/
+  --content-bg-color: #f0fdf4;
+  --content-border-left-color: #22c55e;
+
+  /*P*/
+  --p-font-size: 2.2rem;
+  --p-color: #14532d;
+}
+
+
+
+/* =======================================
+								ALERT
+======================================= */
+.modal.modal-alert {
+  /*MODAL-CONTENT*/
+  --content-bg-color: #fef2f2;
+  --content-border-left-color: #ef4444;
+	
+  /*P*/
+  --p-font-size: 2.2rem;
+  --p-color: #991b1b;
+}
+
+
+
+
+/* =======================================
+								WARNING
+======================================= */
+.modal.modal-warning {
+  /*MODAL-CONTENT*/
+  --content-bg-color: #fefce8;
+  --content-border-left-color: #eab308;
+
+  /*P*/
+  --p-font-size: 2.2rem;
+  --p-color: #713f12;
+}

@@ -1,0 +1,366 @@
+
+/* ===========================================
+                  VARIABLES
+=========================================== */
+.table-container {
+  /* - TABLE - */
+  --container-max-width: 95%;
+  --container-table-max-height: 450px;
+	--container-border-style: solid;
+	--container-border-width: 1.5px;
+	--container-border-radius: 5px;
+  --container-font-family: 'Source Sans 3', sans-serif;
+  --container-font-size: 0.90rem;
+
+  /* - GENERAL - */
+  --cell-padding: 10px 20px;
+  --cell-max-height: 45px;
+	
+	/* - COLUMNS MANAGEMENT BTN */
+  --btn-columns-management-padding: 10px 15px;
+  --btn-columns-management-border: 1px solid #000;
+  --btn-columns-management-bg-color: #ddd;
+	--btn-columns-management-color: #545454;
+	--btn-columns-management-color-hover: #000;
+	
+  /* - THEAD - */
+  --head-bg-color: #ddd;
+  --head-color: #000;
+  --head-font-weight: 600;
+  --head-letter-spacing: 0.03em;
+
+  /* --- INPUT --- */
+  --input-outside-padding: 0px 5px 10px 5px;
+  --input-padding: 6px 12px;
+  --input-border: 1px solid #2d2d38;
+  --input-border-radius: 4px;
+  --input-bg-color: #1c1c22;
+  --input-color: #e2e8f0;
+  --input-border-color-focus: #6366f1;
+
+  /* - TBODY - */
+  --body-bg-color: #eee;
+  --body-bg-color-even-rows: #bbb;
+  --body-hover-bg-color: #fbfbfb;
+  --body-color: #000;
+  --body-secondary-data-color: #71717a;
+  --body-font-weight: 400;
+  --body-letter-spacing: -0.01em;
+  --body-border-bottom: 1px solid #232329;
+
+  /* --- SCROLLBAR --- */
+  --scrollbar-thumb: #8e8e98;
+  --scrollbar-thumb-hover: rgb(58, 58, 64);
+}
+
+
+.column-management-modal {
+	/* - MODAL COLUMNS MANAGEMENT */
+  --modal-columns-management-padding: 30px;
+  --modal-columns-management-bg-color: #fff;
+
+  /* --- LABEL --- */
+  --label-color: #000;
+}
+
+
+
+
+/* ===========================================
+									SCROLLBAR
+=========================================== */
+.table-container .table-container-2::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.table-container .table-container-2::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb);
+  border-radius: 20px;
+  border: 1px solid transparent; 
+  background-clip: padding-box;
+}
+
+.table-container .table-container-2::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scrollbar-thumb-hover);
+}
+
+.table-container .table-container-2::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 12px;
+}
+
+.table-container .table-container-2::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+
+
+
+/* ===========================================
+									GENERAL
+=========================================== */
+.table-container * {
+  font-family: var(--container-font-family);
+  font-size: var(--container-font-size);
+  white-space: nowrap;
+  text-transform: uppercase;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ----- CELLS ----- */
+.table-container th, 
+.table-container td {
+  padding: 0;
+  height: var(--cell-max-height);
+}
+
+.table-container th > div, 
+.table-container td > div {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  padding: var(--cell-padding);
+  height: var(--cell-max-height);
+  min-width: 0; 
+  width: 100%;
+}
+
+.table-container tbody td > div {
+  cursor: pointer;
+}
+
+
+
+/* ===========================================
+                  CONTAINER
+=========================================== */
+.table-container {
+  position: relative;
+  max-width: var(--container-max-width);
+  border-radius: var(--container-border-radius);
+	border-style: var(--container-border-style);
+	border-width: var(--container-border-width);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+
+
+
+
+
+/* ===========================================
+              COLUMNS MANAGEMENT
+=========================================== */
+/* ----- BUTTON ----- */
+.column-management-button{
+	position: absolute;
+  top: 0;
+	left: 3px;
+  transform: translateY(-100%);
+  color: var(--btn-columns-management-color);
+  background: var(--btn-columns-management-bg-color);
+  padding: var(--btn-columns-management-padding);
+  border: var(--btn-columns-management-border);
+  border-bottom: none;
+  border-radius: 5px 5px 0 0;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.column-management-button:hover{
+  color: var(--btn-columns-management-color-hover);
+}
+
+.hidden-col {
+  display: none;
+}
+
+
+/* ----- MODAL ----- */
+.column-management-modal {
+  padding: var(--modal-columns-management-padding);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+  background-color: var(--modal-columns-management-bg-color);
+
+}
+
+.column-management-modal label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  color: var(--label-color);
+}
+
+.column-management-modal label span {
+  white-space: nowrap;
+  text-align: left;
+}
+
+
+
+input[type="checkbox"] {
+
+
+}
+
+
+
+
+/* ===========================================
+                  TABLE
+=========================================== */
+/* ----- TABLE CONTAINER ----- */
+.table-container .table-container-2 {
+  max-height: var(--container-table-max-height);
+  border-radius: var(--container-border-radius);
+  overflow: auto;
+}
+
+/* ----- TABLE ----- */
+.table-container table {
+  width: 100%;
+  border-collapse: collapse;
+	transition: opacity 0.2s ease-in-out;
+}
+
+
+
+
+
+/* ===========================================
+                  CAPTION
+=========================================== */
+caption {
+	caption-side: top;
+	text-align: center;
+  background-color: var(--head-bg-color);
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #333333;
+  padding-top: 13px;
+  padding-bottom: 20px;
+}
+
+.hide-caption {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);     
+	clip-path: inset(50%); 
+	white-space: nowrap;
+	border: 0;
+}
+
+
+
+
+
+/* ===========================================
+                  THEAD
+=========================================== */
+.table-container thead {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+
+/* ----- CELLS ----- */
+.table-container thead th > div,
+.table-container thead td > div{
+  background-color: var(--head-bg-color);
+  color: var(--head-color);
+  font-weight: var(--head-font-weight);
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: var(--head-letter-spacing);
+}
+
+.table-container thead td > div{
+	padding: 5px 10px;
+}
+
+
+/* ----- TR ----- */
+.table-container thead tr:last-child {
+	border-bottom: var(--body-border-bottom);
+}
+
+
+
+
+
+/* ----- INPUT ----- */
+.table-container thead tr:last-child td > div {
+  padding: var(--input-outside-padding);
+}
+
+.table-container thead tr:last-child input:focus {
+  outline: none;
+  border-color: var(--input-border-color-focus);
+}
+
+.table-container thead tr:last-child input{
+	width: 100%;
+  background: var(--input-bg-color);
+  color: var(--input-color);
+  padding: var(--input-padding);
+  border: var(--input-border);
+  border-radius: var(--input-border-radius);
+  transition: border-color 0.2s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+
+
+
+
+/* ===========================================
+                  TBODY
+=========================================== */
+/* ----- ROW ----- */
+.table-container tbody tr {
+  background-color: var(--body-bg-color);
+  transition: background-color 0.15s ease;
+}
+
+.table-container tbody tr:nth-child(even) {
+  background-color: var(--body-bg-color-even-rows);
+}
+
+.table-container tbody tr:hover{
+  background-color: var(--body-hover-bg-color);
+}
+
+
+/* ----- CELLS ----- */
+.table-container tbody tr td > div {
+  color: var(--body-color);
+  font-weight: var(--body-font-weight);
+  border-bottom: var(--body-border-bottom);
+  background-color: transparent;
+}
+
+.table-container tbody tr:last-child td > div {
+  border-bottom: transparent;
+}
+
+
+/* ----- TBODY LOADING ----- */
+.tbody-loading {
+	opacity: 0.5;
+	pointer-events: none;
+	cursor: wait;
+}
