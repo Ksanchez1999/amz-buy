@@ -1,5 +1,27 @@
 
 /* =====================================================
+								ADD NEW KEY TO OBJECT
+===================================================== */
+export function addNewKeyToObject(dataFromMySQL = null, keyName = null, value = null){
+	// -------------------- GUARD CLAUSES --------------------
+	if (!Array.isArray(dataFromMySQL)) throw new Error("dataFromMySQL no es un array");
+	if (keyName === null) throw new Error("Parámetro keyName obligatorio");
+	if (value === null) throw new Error("Parámetro value obligatorio");
+
+	// -------------------- PROCESS DATA --------------------
+	return dataFromMySQL.map((obj)=>{			
+		return {
+			...obj,
+			[keyName]: value,
+		}
+	})
+}
+
+
+
+
+
+/* =====================================================
 								ADD DOM ELEMENT TO OBJECT
 ===================================================== */
 export function addDomElementToObject(dataFromMySQL = null, keyName = null, domElementName = null, { classDomElement = null } = {}){
@@ -52,6 +74,39 @@ export function filterKeysOfObjects(dataFromMySQL = null, keysName = null){
     );
   })
 }
+
+
+
+
+
+
+/* =====================================================
+								FILTER DATABASE OBJECTS
+===================================================== */
+export function filterDatabaseObjects(databaseData, filterData) {
+  // ONLY KEYS WITH VALUE
+  const activeFilters = Object.entries(filterData).filter(([key, value]) => {
+    return value.trim() !== "";
+  });
+
+  if (activeFilters.length === 0) return databaseData;
+
+  // FILTER
+  return databaseData.filter(obj => {
+    return activeFilters.every(([key, value]) => {
+      const cellValue = obj[key].toString().toLowerCase();
+
+      if (!cellValue) return false;
+
+      return cellValue.includes(value.toString().toLowerCase());
+    });
+  });
+}
+
+
+
+
+
 
 
 

@@ -3,40 +3,26 @@
                   VARIABLES
 =========================================== */
 .table-container {
-  /* - TABLE - */
+  /* --- CONTAINER --- */
   --container-max-width: 95%;
-  --container-table-max-height: 450px;
-	--container-border-style: solid;
-	--container-border-width: 1.5px;
-	--container-border-radius: 5px;
+  --container-table-max-height: 33em;
   --container-font-family: 'Source Sans 3', sans-serif;
-  --container-font-size: 0.90rem;
-
-  /* - GENERAL - */
-  --cell-padding: 10px 20px;
-  --cell-max-height: 45px;
+  --container-font-size: 14px;
+  --container-border: 0.11em solid #000;
 	
-	/* - COLUMNS MANAGEMENT BTN */
-  --btn-columns-management-padding: 10px 15px;
-  --btn-columns-management-border: 1px solid #000;
-  --btn-columns-management-bg-color: #ddd;
-	--btn-columns-management-color: #545454;
+	/* --- COLUMNS MANAGEMENT BTN --- */
+	--btn-columns-management-color: #343434;
 	--btn-columns-management-color-hover: #000;
 	
-  /* - THEAD - */
+  /* --- THEAD --- */
   --head-bg-color: #ddd;
   --head-color: #000;
-  --head-font-weight: 600;
-  --head-letter-spacing: 0.03em;
 
   /* --- INPUT --- */
-  --input-outside-padding: 0px 5px 10px 5px;
-  --input-padding: 6px 12px;
-  --input-border: 1px solid #2d2d38;
-  --input-border-radius: 4px;
-  --input-bg-color: #1c1c22;
-  --input-color: #e2e8f0;
-  --input-border-color-focus: #6366f1;
+  --input-border: 1px solid #3a3a3a99;
+  --input-bg-color: #f0f0f0;
+  --input-color: #000;
+  --input-border-color-focus: #000;
 
   /* - TBODY - */
   --body-bg-color: #eee;
@@ -44,9 +30,10 @@
   --body-hover-bg-color: #fbfbfb;
   --body-color: #000;
   --body-secondary-data-color: #71717a;
-  --body-font-weight: 400;
-  --body-letter-spacing: -0.01em;
-  --body-border-bottom: 1px solid #232329;
+
+  /* - MSG ALL TD - */
+  --td-error-msg-color: #d9534f;
+  --td-no-results-msg-color: #000;
 
   /* --- SCROLLBAR --- */
   --scrollbar-thumb: #8e8e98;
@@ -56,7 +43,7 @@
 
 .column-management-modal {
 	/* - MODAL COLUMNS MANAGEMENT */
-  --modal-columns-management-padding: 30px;
+  --modal-columns-management-font-size: 14px;
   --modal-columns-management-bg-color: #fff;
 
   /* --- LABEL --- */
@@ -70,13 +57,13 @@
 									SCROLLBAR
 =========================================== */
 .table-container .table-container-2::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 0.65em;
+  height: 0.65em;
 }
 
 .table-container .table-container-2::-webkit-scrollbar-thumb {
   background-color: var(--scrollbar-thumb);
-  border-radius: 20px;
+  border-radius: 1.2em;
   border: 1px solid transparent; 
   background-clip: padding-box;
 }
@@ -87,7 +74,7 @@
 
 .table-container .table-container-2::-webkit-scrollbar-track {
   background: transparent;
-  border-radius: 12px;
+  border-radius: 0.9em;
 }
 
 .table-container .table-container-2::-webkit-scrollbar-corner {
@@ -102,7 +89,6 @@
 =========================================== */
 .table-container * {
   font-family: var(--container-font-family);
-  font-size: var(--container-font-size);
   white-space: nowrap;
   text-transform: uppercase;
   overflow: hidden;
@@ -113,7 +99,7 @@
 .table-container th, 
 .table-container td {
   padding: 0;
-  height: var(--cell-max-height);
+  height: 3.3em;
 }
 
 .table-container th > div, 
@@ -121,10 +107,11 @@
   display: flex;
   align-items: center;
   justify-content: start;
-  padding: var(--cell-padding);
-  height: var(--cell-max-height);
+  padding: 0.85em 0.7em;
+  height: 3.3em;
   min-width: 0; 
   width: 100%;
+  letter-spacing: -0.01em;
 }
 
 .table-container tbody td > div {
@@ -137,16 +124,14 @@
                   CONTAINER
 =========================================== */
 .table-container {
+  font-size: var(--container-font-size);
   position: relative;
   max-width: var(--container-max-width);
-  border-radius: var(--container-border-radius);
-	border-style: var(--container-border-style);
-	border-width: var(--container-border-width);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  background: var(--head-bg-color);
+  border-radius: 	0.4em;
+	border: var(--container-border);
+  box-shadow: 0 0.4em 1.3em rgba(0, 0, 0, 0.2);
 }
-
-
-
 
 
 
@@ -157,14 +142,14 @@
 .column-management-button{
 	position: absolute;
   top: 0;
-	left: 3px;
+	left: 0.2em;
   transform: translateY(-100%);
   color: var(--btn-columns-management-color);
-  background: var(--btn-columns-management-bg-color);
-  padding: var(--btn-columns-management-padding);
-  border: var(--btn-columns-management-border);
+  background: var(--head-bg-color);
+  padding: 0.6em 0.85em;
+  border: var(--container-border);
   border-bottom: none;
-  border-radius: 5px 5px 0 0;
+  border-radius: 0.4em 0.4em 0 0;
   cursor: pointer;
   transition: color 0.15s ease;
 }
@@ -180,10 +165,11 @@
 
 /* ----- MODAL ----- */
 .column-management-modal {
-  padding: var(--modal-columns-management-padding);
+  font-size: var(--modal-columns-management-font-size);
+  padding: 2.1em;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 0.9em;
   align-items: flex-start;
   background-color: var(--modal-columns-management-bg-color);
 
@@ -192,21 +178,21 @@
 .column-management-modal label {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 0.8em;
   cursor: pointer;
   color: var(--label-color);
 }
 
 .column-management-modal label span {
+  font-size: 1.3em;
   white-space: nowrap;
   text-align: left;
 }
 
 
-
-input[type="checkbox"] {
-
-
+.input-checkbox {
+  --checkbox-width: 1.4em;
+  --checkbox-height: 1.4em;
 }
 
 
@@ -218,7 +204,7 @@ input[type="checkbox"] {
 /* ----- TABLE CONTAINER ----- */
 .table-container .table-container-2 {
   max-height: var(--container-table-max-height);
-  border-radius: var(--container-border-radius);
+  border-radius: 0.4em;
   overflow: auto;
 }
 
@@ -243,8 +229,8 @@ caption {
   font-size: 1.1rem;
   font-weight: bold;
   color: #333333;
-  padding-top: 13px;
-  padding-bottom: 20px;
+  padding-top: 0.95em;
+  padding-bottom: 1.2em;
 }
 
 .hide-caption {
@@ -279,20 +265,20 @@ caption {
 .table-container thead td > div{
   background-color: var(--head-bg-color);
   color: var(--head-color);
-  font-weight: var(--head-font-weight);
+  font-weight: 600;
   text-align: left;
   text-transform: uppercase;
-  letter-spacing: var(--head-letter-spacing);
+  letter-spacing: 0.03em;
 }
 
 .table-container thead td > div{
-	padding: 5px 10px;
+	padding: 0.4em 0.8em;
 }
 
 
 /* ----- TR ----- */
 .table-container thead tr:last-child {
-	border-bottom: var(--body-border-bottom);
+	border-bottom: var(--container-border);
 }
 
 
@@ -301,7 +287,7 @@ caption {
 
 /* ----- INPUT ----- */
 .table-container thead tr:last-child td > div {
-  padding: var(--input-outside-padding);
+  padding: 0em 0.4em 0.6em 0.4em;
 }
 
 .table-container thead tr:last-child input:focus {
@@ -313,9 +299,9 @@ caption {
 	width: 100%;
   background: var(--input-bg-color);
   color: var(--input-color);
-  padding: var(--input-padding);
+  padding: 0.4em 0.9em;
   border: var(--input-border);
-  border-radius: var(--input-border-radius);
+  border-radius: 0.4em;
   transition: border-color 0.2s;
   white-space: nowrap;
   overflow: hidden;
@@ -334,6 +320,7 @@ caption {
 .table-container tbody tr {
   background-color: var(--body-bg-color);
   transition: background-color 0.15s ease;
+  border-bottom: var(--container-border);
 }
 
 .table-container tbody tr:nth-child(even) {
@@ -348,8 +335,7 @@ caption {
 /* ----- CELLS ----- */
 .table-container tbody tr td > div {
   color: var(--body-color);
-  font-weight: var(--body-font-weight);
-  border-bottom: var(--body-border-bottom);
+  font-weight: 400;
   background-color: transparent;
 }
 
@@ -360,7 +346,26 @@ caption {
 
 /* ----- TBODY LOADING ----- */
 .tbody-loading {
-	opacity: 0.5;
+	opacity: 0.9;
 	pointer-events: none;
 	cursor: wait;
 }
+
+/* ----- TD MSGS ----- */
+.td-error-msg,
+.td-no-results-msg {
+	text-align: center;
+	padding: 20px;
+}
+
+.td-error-msg {
+  color: var(--td-error-msg-color);
+}
+
+.td-no-results-msg {
+  color: var(--td-no-results-msg-color);
+}
+
+
+
+

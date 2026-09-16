@@ -7,51 +7,31 @@ import { createTbody } from '../index.js';
 import { updateDom } from './columns-management.js';
 import { debounce } from '../../general/general-tools.js';
 import { post } from '../../requests/index.js';
+import { createTrMsgToFilter } from './filter.js';
+import { filterDatabaseObjects } from "../../database/mysql/formatters.js";
+
+
+
 
 
 /* =========================================================
-										SUPPORT FUNCTIONS
+									  APPLY OFFLINE FILTER
 ========================================================= */
-// -------------------- CREATE TR MSG TO FILTER --------------------
-export function createTrMsgToFilter(typeMsg, columnsCount){
-  const msg = {
-    error: `<tr><td colspan="${columnsCount}" class="td-error-msg">Error al filtrar, intenta de nuevo.</td></tr>`,
-    noResults: `<tr><td colspan="${columnsCount}" class="td-no-results-msg">No se encontraron resultados.</td></tr>`,
-  }
-
-  return msg[typeMsg];
-}
-
-
-
-// -------------------- APPLY FILTER --------------------
-async function applyFilter($table, url, serverDataTreatment){
+function applyOfflineFilter($table, originalDatabaseData, serverDataTreatment){
 	// ----- GET INPUTS DATA -----
 	const inputsData = {};
 	$table.querySelectorAll('thead input').forEach((input)=> {
 		inputsData[input.name] = input.value;
 	})
 	
-	// ----- TBODY LOADING -----
+	// ----- CURRENT TBODY  -----
 	const $currentTbody = $table.querySelector("tbody");
-	$currentTbody.classList.add('tbody-loading');
 
 	// ----- COLUMNS COUNT -----
 	const columnsCount = $table.querySelectorAll('thead th').length;
 
-	// ----- FETCH -----
-	let newTbodyData;
-	
-	try {
-		newTbodyData = await post(url, { body: inputsData });
-	} catch {
-		// ERR MSG
-		$currentTbody.innerHTML = createTrMsgToFilter("error", columnsCount);	
-		return;
-	} finally {
-		// REMOVE TBODY LOADING
-		$currentTbody.classList.remove('tbody-loading');
-	}
+	// ----- FILTER -----
+	let newTbodyData = filterDatabaseObjects(originalDatabaseData, inputsData);
 
 	// NO RESULTS MSG
 	if(newTbodyData.length == 0) {
@@ -60,10 +40,10 @@ async function applyFilter($table, url, serverDataTreatment){
   }
 
 	// ----- SERVER DATA TREATMENT -----
-	const tbodyData = serverDataTreatment(newTbodyData);
+	const modifiedDatabaseData = serverDataTreatment(newTbodyData);
 	
 	// ----- UPDATE TBODY -----
-	const $newTbody = createTbody(tbodyData, newTbodyData);
+	const $newTbody = createTbody(modifiedDatabaseData, newTbodyData);
 	$currentTbody.replaceWith($newTbody);
   updateDom($table.id);
 }
@@ -72,18 +52,14 @@ async function applyFilter($table, url, serverDataTreatment){
 
 
 
-
-
-
-
 /* =========================================================
 												ADD FILTER
 ========================================================= */
-export function addFilterToTheTable($table = null, inputsName = null, url = null, serverDataTreatment = null){
+export function addOfflineFilterToTheTable($table = null, inputsName = null, originalDatabaseData = null, serverDataTreatment = null){
 	// ----- GUARD CLAUSES -----
 	if ($table === null) throw new Error("Debe proveer un elemento tabla ($table)");
 	if (!Array.isArray(inputsName)) throw new Error("inputsName debe ser un array");
-	if (url === null) throw new Error("Debe proveer un url");
+	if (originalDatabaseData === null) throw new Error("Debe proveer la base de datos original");
 	if (serverDataTreatment === null) throw new Error("Debe proveer la función para tratar los datos obtenidos del servidor");
 	
 	// ----- ADD INPUTS -----
@@ -95,11 +71,16 @@ export function addFilterToTheTable($table = null, inputsName = null, url = null
 
 	const $tr = createTr("td", $inputs);
 	$table.querySelector('thead').append($tr);
-	
+
+
 	// ----- ADD EVENT -----
-	const filterEvent = debounce(applyFilter, 500)
-	
+	const filterEvent = debounce(applyOfflineFilter, 300)
+
+		
 	$table.querySelector('thead').addEventListener("input", ()=>{
-		filterEvent($table, url, serverDataTreatment);
+		filterEvent($table, originalDatabaseData, serverDataTreatment);
 	});
 }
+
+
+

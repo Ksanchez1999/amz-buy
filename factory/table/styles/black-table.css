@@ -5,12 +5,10 @@
 =========================================== */
 /* ---------- VARIABLES ---------- */
 .container-black-table {
-  /* - TABLE - */
-  --table-border-color: #232329;
+  /* --- CONTAINER --- */
+  --container-border: 0.11em solid #232329;
 
 	/* - COLUMNS MANAGEMENT BTN */
-  --btn-columns-management-border: 1px solid #232329;
-  --btn-columns-management-bg-color: #050506;
 	--btn-columns-management-color: #94a3b8;
 	--btn-columns-management-color-hover: #7a8696;
 
@@ -30,7 +28,10 @@
   --body-bg-color-even-rows: #1c1c22;
   --body-color: #e2e8f0;
   --body-secondary-data-color: #71717a;
-  --body-border-bottom: 1px solid #232329;
+
+  /* - MSG ALL TD - */
+  --td-error-msg-color: #d9534f;
+  --td-no-results-msg-color: #fff;
 
   /* - SCROLLBAR - */
   --scrollbar-thumb: #27272a;
@@ -38,7 +39,7 @@
 }
 
 
-.column-management-modal {
+.column-management-modal.columns-management-modal-black-table {
 	/* - MODAL COLUMNS MANAGEMENT */
   --modal-columns-management-bg-color: #1c1c22;
 
@@ -46,14 +47,6 @@
   --label-color: #e2e8f0;
 }
 
-
-
-
-
-/* ---------- TABLE-BLACK ---------- */
-.container-black-table {
-	border-color: var(--table-border-color);
-}
 
 
 

@@ -65,6 +65,7 @@ function createInput(name, inputType, {
   // CREATE
   const input = document.createElement('input');
   input.name = name;
+  input.classList.add("input");
 
   // SET PROPERTIES
   Object.entries(properties).forEach(([key, value]) => {

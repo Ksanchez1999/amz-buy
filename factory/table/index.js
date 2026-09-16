@@ -66,3 +66,5 @@ export function createBasicTable(containerId = null, theadData = null, tbodyData
 	// RETURN
 	return $container;
 }
+
+

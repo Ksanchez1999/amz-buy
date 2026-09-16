@@ -1,10 +1,16 @@
 
 .badge {
+  --bg-color: #f4f4f9;
+  --color: #656565;
+}
+
+
+.badge {
   display: inline-block;
-  background-color: #f4f4f9;
-  color: #656565;
+  background-color: var(--bg-color);
+  color: var(--color);
   padding: 0.4em 0.8em;
-  font-size: 0.85rem;
+  font-size: 1em;
   font-weight: bold;
   border-radius: 2em;
   text-align: center;
@@ -16,16 +22,16 @@
 }
 
 .badge-active {
-  background-color: #d4edda;
-  color: #155724;
+  --bg-color: #d4edda;
+  --color: #155724;
 }
 
 .badge-inactive {
-  background-color: #f8d7da;
-  color: #721c24;
+  --bg-color: #f8d7da;
+  --color: #721c24;
 }
 
 .badge-pending {
-  background-color: #fff3cd;
-  color: #856404;
+  --bg-color: #fff3cd;
+  --color: #856404;
 }

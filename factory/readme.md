@@ -1,12 +1,5 @@
 
 
-REEMPLAZAR
-
-README
-TABLE/INDEX.CSS
-TABLE/INDEX.JS
-
-
 
 ## ********************************************** ALL HTML IMPORTS **********************************************
   <!-- _______________CSS-FACTORY_______________ -->
@@ -29,13 +22,16 @@ TABLE/INDEX.JS
   <link rel="stylesheet" href="/factory/modal/index.css">
   <link rel="stylesheet" href="/factory/modal/styles.css">
 
+  <!-- CARD -->
+  <link rel="stylesheet" href="/factory/card/index.css">
+
   <!-- TOAST NOTIFICATIONS -->
   <link rel="stylesheet" href="/factory/toast-notifications/index.css">
 
   <!-- TABLE -->
   <link rel="stylesheet" href="/factory/table/index.css">
+  <link rel="stylesheet" href="/factory/table/responsive.css">
   <link rel="stylesheet" href="/factory/table/styles/black-table.css">
-
 
   <!-- _______________FUENTES_______________ -->
   <!-- SOURCE SANS 3 -->
@@ -66,80 +62,133 @@ TABLE/INDEX.JS
 1. IMPORTAR MÓDULOS:
 
 /* TABLE */
-import { createBasicTable} from '/factory/table/index.js';
-import { addColumnsManagement} from '/factory/table/plugins/columns-management.js';
-import { addFilterToTheTable} from '/factory/table/plugins/filter.js';
-import { addEventToCopyTbodyCell} from '/factory/table/plugins/events.js';
-import { showCaption} from '/factory/table/plugins/caption.js';
+import { createBasicTable } from '/factory/table/index.js';
+import { addColumnsManagement } from '/factory/table/plugins/columns-management.js';
+import { addFilterToTheTable } from '/factory/table/plugins/filter.js';
+import { addOfflineFilterToTheTable } from '/factory/table/plugins/filter-offline.js';
+import { addEventToCopyTbodyCell } from '/factory/table/plugins/events.js';
+import { showCaption } from '/factory/table/plugins/caption.js';
+
+/* REQUEST */
+import { get, post } from '/factory/requests/index.js';
+
+/* DATABASE TREATMENT */
+import { addNewKeyToObject, addDomElementToObject, filterKeysOfObjects } from '/factory/database/mysql/formatters.js';
 
 -----------------------------------------------------------------------------------------------------
-2. CREAR TABLA BÁSICA [createBasicTable]:
+2. DEFINIR ID DE LA TABLA:
 
-* EJEMPLO
-const $table = createBasicTable("profiles-table", theadData, tbodyDataModified, tbodyDataOriginal);
-
-* PARÁMETROS:
-- containerId: STRING,
-- theadData: [STRING / DOM-ELEMENT]
-- tbodyDataModified: [OBJECT]
-- tbodyDataOriginal: [OBJECT]
+const containerTableId = 'profiles-table';
 
 -----------------------------------------------------------------------------------------------------
-3. AGREGAR CLASE:
+3. OBTENER DATABASE DATA (DEFINE CADA FILA DEL TBODY):
 
-* EJEMPLO
+const databaseDataUrl = 'https://example.com';
+const databaseData = get(databaseDataUrl);
+
+-----------------------------------------------------------------------------------------------------
+4. CREAR THEAD NAMES (DEFINE CADA NOMBRE DE COLUMNA):
+
+const theadNames = [
+  "ID",
+  "Nombre",
+  "Correo",
+  "Fecha de registro",
+  "Estado",
+  "Rol",
+  "Acción"
+]
+
+
+-----------------------------------------------------------------------------------------------------
+5. CREAR TABLE KEYS (SE USA PARA FILTRAR LA BD Y CREAR LOS INPUTS):
+
+const tableKeys = [
+  "id",
+  "name",
+  "email",
+  "registerDate",
+  "status",
+  "role",
+  "button"
+];
+
+-----------------------------------------------------------------------------------------------------
+6. MODIFICAR TBODY DATA (MODIFICA LA BD, SE UTILIZARÁ EN CADA FILTRADO):
+
+function serverDataTreatment(serverData){
+  const serverDataModified1 = addNewKeyToObject(serverData, "button", "Editar");
+  const serverDataModified2 = addDomElementToObject(serverDataModified1, "button", "button", { classDomElement: ["no-copy", "btn", "btn-edit"] });
+	return filterKeysOfObjects(serverDataModified2, tableKeys);
+}
+
+const databaseDataModified = serverDataTreatment(databaseData);
+
+-----------------------------------------------------------------------------------------------------
+7. CREAR TABLA BÁSICA:
+
+const $table = createBasicTable(containerTableId, theadNames, databaseDataModified, databaseData);
+document.body.append($table);
+
+-----------------------------------------------------------------------------------------------------
+8. AGREGAR CLASE PARA CSS:
+
 $table.classList.add("container-black-table");
 
 -----------------------------------------------------------------------------------------------------
-4. AGREGAR FILTRO [addFilter]:
+9. AGREGAR EVENTO DE COPIADO A CELDAS DEL BODY:
+**Para que no se active el evento, se debe añadir la clase "no-copy" al elemento que no requiere ser copiado**
 
-* EJEMPLO
-addFilterToTheTable($table, [...tableKeys, " "], urlToFilter, serverDataTreatment);
-
-* PARÁMETROS:
-- $table: DOM ELEMENT
-- inputsName: [STRING]
-- url: STRING
-- serverDataTreatment: FUNCTION
+addEventToCopyTbodyCell(containerTableId);
 
 -----------------------------------------------------------------------------------------------------
-5. AGREGAR MANEJADOR DE COLUMNAS [addColumnsManagement]:
+10. AGREGAR FILTRO DESDE URL:
 
-* EJEMPLO
-addColumnsManagement("profiles-table");
+const urlToFilter = 'https://example.com';
 
-* PARÁMETROS:
-- containerId: STRING
+addFilterToTheTable($table, tableKeys, urlToFilter, serverDataTreatment);
 
 -----------------------------------------------------------------------------------------------------
-6. AGREGAR EVENTO DE COPIADO A CELDAS DEL BODY [addEventToCopyTbodyCell]:
+11. AGREGAR FILTRO OFFLINE:
+**No se debe añadir si ya existe el filtro desde la URL**
 
-* EJEMPLO
-addEventToCopyTbodyCell("profiles-table");
-
-* PARÁMETROS:
-- containerId: STRING
+addOfflineFilterToTheTable($table, tableKeys, databaseData, serverDataTreatment);
 
 -----------------------------------------------------------------------------------------------------
-7. MOSTRAR CAPTION [showCaption]:
+12. AGREGAR MANEJADOR DE COLUMNAS:
+**El parámetro "classForColumnsManagementModal" es sólo si requieres estilos, se puede omitir**
 
-* EJEMPLO
-showCaption("profiles-table", "TABLA DE EJEMPLO PARA PRÓXIMOS PROYECTOS");
+const classForColumnsManagementModal = 'columns-management-modal-black-table';
 
-* PARÁMETROS:
-- containerId: STRING
-- captionText: STRING
+addColumnsManagement(containerTableId, classForColumnsManagementModal);
 
 -----------------------------------------------------------------------------------------------------
-8. MODIFICAR EL ANCHO MÁXIMO DE LA COLUMNA:
+13. MOSTRAR CAPTION:
+
+showCaption(containerTableId, "TABLA DE EJEMPLO PARA PRÓXIMOS PROYECTOS");
+
+-----------------------------------------------------------------------------------------------------
+14. ELIMINAR ÚLTIMO INPUT CON CSS:
+
+SELECTOR-INDIVIDUAL-DE-LA-TABLA thead tr td:last-child input {
+  display: none;
+}
+
+-----------------------------------------------------------------------------------------------------
+15. MODIFICAR EL ANCHO MÁXIMO DE LA COLUMNA CON CSS:
 
 SELECTOR-INDIVIDUAL-DE-LA-TABLA tbody .col-1 > div {
   display: block;
   max-width: 120px;
+  transition: max-width 0.4s ease-in-out;
+}
+
+SELECTOR-INDIVIDUAL-DE-LA-TABLA tbody .col-1 > div:hover {
+  max-width: 1000px;
 }
 
 -----------------------------------------------------------------------------------------------------
-9. APLICAR OPACIDAD A COLUMNA:
+16. APLICAR OPACIDAD A COLUMNA CON CSS:
 
 SELECTOR-INDIVIDUAL-DE-LA-TABLA tbody tr td:nth-child(1) > div,
 SELECTOR-INDIVIDUAL-DE-LA-TABLA tbody tr td:nth-child(2) > div {
@@ -150,7 +199,7 @@ SELECTOR-INDIVIDUAL-DE-LA-TABLA tbody tr td:nth-child(2) > div {
 
 
 
-## ========================= LISTA DE CLASES =========================
+## ========================= LISTA DE CLASES CSS =========================
 - container-black-table
 
 
@@ -159,18 +208,6 @@ SELECTOR-INDIVIDUAL-DE-LA-TABLA tbody tr td:nth-child(2) > div {
 * La clase base del contenedor de la tabla es: "table-container".
 * Todos los **tr** de la tabla tienen una propiedad **_databaseData** que tiene el objeto original de la base de datos.
 
-*_____INFORMACIÓN PARA AGREGAR FILTRO_____*
-* Se debe crear una función **serverDataTreatment** que reciba el *array original* y le brinde tratamiento (Sin alteral el original).
-* Las clases adicionales deben aplicarse a los elementos del DOM que insertes mediante **serverDataTreatment**, ya que al filtrar se eliminan las de la estructura incial del tbody.
-* Que **inputsName** sea preferiblemente de las claves del objeto que viene desde la BD.
-
---EJEMPLO DE FUNCIÓN PARA MODIFICAR DATOS DEL SERVIDOR--
-function serverDataTreatment(serverData){
-	return filterKeysOfObjects(serverData, ["id", "name"]);
-}
-
-*_____INFORMACIÓN PARA COPIADO DE CELDAS_____*
-* Para que no se active el evento, se debe añadir la clase **no-copy** al elemento que no requiere ser copiado. Si el elemento no cubre el 100% del espacio, la clase debe añadirse tambien al padre para evitar copiar al padre con click fuera del target.
 
 
 
@@ -191,39 +228,25 @@ function serverDataTreatment(serverData){
 
 
 
+# ********************************************** /GENERAL/FAKE-DATA.JS **********************************************
+1. IMPORTAR MÓDULO:
 
-# ******************* FACTORY/DATABASE/MYSQL/FORMATTERS.JS *******************
+/* FAKE DATA */
+import { dataMysqlStandart, dataMysqlFiltered } from '/factory/general/fake-data.js';
 
-# ================== JS ==================
-## --- IMPORT ---
-import { addDomElementToObject, filterKeysOfObjects } from "./mysql-data-treatment/index.js";
+-----------------------------------------------------------------------------------------------------
+2. OBTENER DATA DE MYSQL ESTÁNDAR:
 
+const databaseData = dataMysqlStandart;
 
-## ---------- ADD DOM ELEMENT TO OBJECT ----------
-### --- > IN ---
-* dataFromMySQL: ARRAY OF OBJECTS
-* keyName: STRING
-* domElementName: STRING
-* OPTIONAL OBJECT: { classDomElement: ARRAY OF STRING }
+**Las claves de los objetos son: id, name, email, registerDate, status, role**
 
-### --- < OUT ---
-* ARRAY OF OBJECTS MODIFY
+-----------------------------------------------------------------------------------------------------
+3. OBTENER DATA DE MYSQL ESTÁNDAR FILTRADA:
 
-### --- USE ---
-const newDataFromMysql = addDomElementToObject(dataFromMySQL, "name", "span", { classDomElement: ["badge"]});
+const databaseDataFiltered = dataMysqlFiltered;
 
-
-
-## ---------- FILTER KEYS OF OBJECTS ----------
-### --- > IN ---
-* dataFromMySQL: ARRAY OF OBJECTS
-* keysName: ARRAY OF STRING
-
-### --- < OUT ---
-* ARRAY OF OBJECTS MODIFY
-
-### --- USE ---
-const newDataFromMysql = filterKeysOfObjects(dataFromMySQL, ["id, name"]);
+**Las claves de los objetos son: id, name, email, registerDate, status, role**
 
 
 
@@ -235,21 +258,305 @@ const newDataFromMysql = filterKeysOfObjects(dataFromMySQL, ["id, name"]);
 
 
 
-# ******************* /MODAL *******************
-# ---------- CSS CLASS ----------
-modal-warning
-modal-alert
-modal-success
-modal-info
 
-# ---------- IMPORT ----------
+
+
+
+
+
+
+
+
+# ********************************************** /DATABASE/MYSQL/FORMATTERS.JS **********************************************
+1. IMPORTAR MÓDULO:
+
+/* FORMATTERS OF MYSQL DATA */
+import {
+  addNewKeyToObject,
+  addDomElementToObject,
+  filterKeysOfObjects,
+  filterDatabaseObjects,
+  convertNumberToYesOrNotFromDb,
+  convertNumberToYesOrNot,
+  convertYesOrNotToNumber
+} from "/factory/database/mysql/formatters.js";
+
+-----------------------------------------------------------------------------------------------------
+2. AÑADIR UNA NUEVA LLAVE A LA BASE DE DATOS:
+**Se pueden colocar los valores de las variables directamente en los parámetros**
+
+const serverData = [{}, {}];
+const newKey = "button";
+const newValue = "button";
+
+const serverDataModified = addNewKeyToObject(serverData, newKey, newValue);
+
+-----------------------------------------------------------------------------------------------------
+3. AÑADIR UN ELEMENTO DEL DOM A LA BASE DE DATOS, SEGÚN SU LLAVE:
+**Se pueden colocar los valores de las variables directamente en los parámetros**
+
+const serverData = [{}, {}];
+const keyToModify = "button";
+const newDomElementName = "button";
+const newDomElementClassList = ["no-copy", "btn-edit"];
+
+const serverDataModified = addDomElementToObject(serverData, keyToModify, newDomElementName, { classDomElement: newDomElementClassList });
+
+-----------------------------------------------------------------------------------------------------
+4. FILTRAR LAS LLAVES DE LOS OBJETOS:
+**Se pueden colocar los valores de las variables directamente en los parámetros**
+
+const serverData = [{}, {}];
+const keysToKeep = ["id", "name", "date"];
+
+const serverDataModified = filterKeysOfObjects(serverData, keysToKeep);
+
+-----------------------------------------------------------------------------------------------------
+5. FILTRAR OBJETOS COMPLETOS EN EL ARRAY:
+
+const databaseData = [{id: "15", name: "Pedro"}, {id: "17", name: "Ana"}];
+const filterData = { id: "15", name: "pedr" };
+
+const serverDataModified = filterDatabaseObjects(databaseData, filterData);
+
+-----------------------------------------------------------------------------------------------------
+6. CONVERTIR NÚMEROS EN SI O NO EN LA BASE DE DATOS:
+**Se pueden colocar los valores de las variables directamente en los parámetros**
+
+const serverData = [{}, {}];
+const keyToModify = ["active"];
+
+const serverDataModified = convertNumberToYesOrNotFromDb(serverData, keyToModify);
+
+-----------------------------------------------------------------------------------------------------
+7. CONVERTIR NÚMERO EN SI O NO:
+**Se pueden colocar los valores de las variables directamente en los parámetros**
+
+const number = 1;
+const result = convertNumberToYesOrNot(number);
+
+-----------------------------------------------------------------------------------------------------
+8. CONVERTIR SI O NO EN NÚMEROS:
+**Se pueden colocar los valores de las variables directamente en los parámetros**
+
+const param = "si";
+const result = convertYesOrNotToNumber(param);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# ********************************************** /FORM/DOM/INPUT **********************************************
+1. IMPORTAR MÓDULO:
+
+/* INPUTS */
+import {
+  createInputText,
+  createInputPassword,
+  createInputEmail,
+  createInputNumber,
+  createInputDate,
+  createInputCheckbox,
+  createInputRadio
+} from '/factory/form/dom/input/index.js';
+
+-----------------------------------------------------------------------------------------------------
+2. CREAR INPUT DE TIPO TEXTO:
+**Se pueden colocar los valores de las variables directamente en los parámetros**
+**El único obligatorio es "name"**
+
+const name = "id";
+const $inputText = createInputText(name, { classList: [ "input-text-black" ], placeholder: "Escribe acá..." });
+$father.append($inputText);
+
+-----------------------------------------------------------------------------------------------------
+3. CREAR INPUT DE TIPO CONTRASEÑA:
+**Se pueden colocar los valores de las variables directamente en los parámetros**
+**El único obligatorio es "name"**
+
+const name = "password";
+const $inputPassword = createInputPassword(name, { classList: [ "input-text-black" ], placeholder: "Contraseña..." });
+$father.append($inputPassword);
+
+-----------------------------------------------------------------------------------------------------
+4. CREAR INPUT DE TIPO EMAIL:
+**Se pueden colocar los valores de las variables directamente en los parámetros**
+**El único obligatorio es "name"**
+
+const name = "email";
+const $inputEmail = createInputEmail(name, { classList: [ "input-text-black" ], placeholder: "Email..." });
+$father.append($inputEmail);
+
+-----------------------------------------------------------------------------------------------------
+5. CREAR INPUT DE TIPO NÚMERO:
+**Se pueden colocar los valores de las variables directamente en los parámetros**
+**El único obligatorio es "name"**
+
+const name = "amount";
+const $inputNumber = createInputNumber(name, { classList: [ "input-number-black" ], placeholder: "Ingresa el número..." });
+$father.append($inputNumber);
+
+-----------------------------------------------------------------------------------------------------
+6. CREAR INPUT DE TIPO FECHA:
+**Se pueden colocar los valores de las variables directamente en los parámetros**
+**El único obligatorio es "name"**
+
+const name = "date";
+const $inputDate = createInputDate(name, { classList: [ "input-date-black" ]});
+$father.append($inputDate);
+
+-----------------------------------------------------------------------------------------------------
+7. CREAR INPUT DE TIPO CHECKBOX:
+**Se pueden colocar los valores de las variables directamente en los parámetros**
+**El único obligatorio es "name"**
+
+const name = "active";
+const $inputCheckbox = createInputCheckbox(name, { classList: [ "input-checkbox-black" ]});
+$father.append($inputCheckbox);
+
+-----------------------------------------------------------------------------------------------------
+8. CREAR INPUT DE TIPO RADIO BUTTON:
+**Se pueden colocar los valores de las variables directamente en los parámetros**
+**El único obligatorio es "name"**
+
+const name = "color";
+const $inputRadio = createInputRadio(name, { classList: [ "input-radio-black" ]});
+$father.append($inputRadio);
+
+
+
+## ========================= LISTA DE CLASES CSS =========================
+- 
+
+
+## ========================= NOTAS =========================
+* Para cambiar el estado inicial de un checkbox puedes usar: "DOMELEMENT.checked = true";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# ********************************************** /MODAL **********************************************
+1. IMPORTAR MÓDULO:
+
+/* MODAL */
 import { createModal } from '/factory/modal/index.js';
 
-# ---------- USE ----------
-const $modal = createModal(
-	"Proceso completado!",
-	{ classList: ["modal-success"] }
-);
+-----------------------------------------------------------------------------------------------------
+2. CREAR MODAL INFORMATIVO
+**El único parámetro obligatorio es "message"**
+
+const message = "MENSAJE INFORMATIVO PARA MODAL";
+const $modal = createModal(message, { classList: ["modal-success"] });
+document.body.append($modal);
+
+-----------------------------------------------------------------------------------------------------
+3. CREAR MODAL CON NODO
+**Se puede añadir { classList: ["TU-CLASE-PARA-MODAL"] } como segundo parámetro**
+
+const $p = document.createElement('p');
+$p.classList.add('example-p');
+$p.textContent = 'Este es un párrafo de ejemplo.';
+
+const $modal = createModal($p);
+document.body.append($modal);
+
+## ========================= LISTA DE CLASES CSS =========================
+- modal-warning
+- modal-alert
+- modal-success
+- modal-info
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# ********************************************** /CARD **********************************************
+1. IMPORTAR MÓDULO:
+
+/* CARD */
+import { createBasicCard, AddBackSide } from '/factory/card/index.js';
+
+-----------------------------------------------------------------------------------------------------
+2. CREAR TARJETA BÁSICA
+
+const { $cardContainer, $card, $cardFront } = createBasicCard();
+
+const $containerFront = document.createElement('div');
+$containerFront.className = 'container-front';
+$cardFront.append($containerFront);
+
+document.body.append($cardContainer);
+
+-----------------------------------------------------------------------------------------------------
+3. AÑADIR SEGUNDA CARA Y BOTON PARA GIRAR
+**Debes añadir los botones de giro en el contenedor que hayas creado para cada cara**
+
+const { $cardBack, $btnFlippedFront, $btnFlippedBack } = AddBackSide($cardContainer);
+
+const $containerBack = document.createElement('div');
+$containerBack.className = 'container-back';
+$cardBack.append($containerBack);
+
+const $containerButtonFront = document.createElement('div');
+$containerButtonFront.className = 'container-button container-button-front';
+$containerButtonFront.append($btnFlippedFront);
+$containerFront.append($containerButtonFront);
+
+const $containerButtonBack = document.createElement('div');
+$containerButtonBack.className = 'container-button container-button-back';
+$containerButtonBack.append($btnFlippedBack);
+$containerBack.append($containerButtonBack);
+
+
+
 
 
 

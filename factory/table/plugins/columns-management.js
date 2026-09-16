@@ -39,12 +39,13 @@ export function updateDom(containerId) {
 
 
 // -------------------- CREATE MANAGEMENT COLUMNS --------------------
-export function createManagementColumns(containerId){
+export function createManagementColumns(containerId, className){
   const $table = document.getElementById(containerId);
 
 	// MANAGEMENT COLUMNS
 	const $mc = document.createElement("div");
 	$mc.className = "column-management-modal";
+	if(className) $mc.classList.add(className);
 
 	// CHECKBOX AND LABELS
 	$table.querySelectorAll(`thead > tr:first-of-type th`).forEach(($th, i) => {
@@ -84,9 +85,10 @@ export function createManagementColumns(containerId){
 /* =========================================================
 												ADD COLUMNS MANAGEMENT
 ========================================================= */
-export function addColumnsManagement(containerId = null){
+export function addColumnsManagement(containerId = null, className = null){
 	// GUARD CLAUSES
 	if (containerId === null) throw new Error("Debe proveer el ID de la tabla");
+
 
 	updateDom(containerId);
   const $table = document.getElementById(containerId);
@@ -98,5 +100,5 @@ export function addColumnsManagement(containerId = null){
   $table.prepend($btn);
 
   // EVENT
-  $btn.addEventListener("click", (e)=> createManagementColumns(containerId))
+  $btn.addEventListener("click", (e)=> createManagementColumns(containerId, className))
 }

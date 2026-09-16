@@ -4,6 +4,7 @@
 import { createBasicTable } from './factory/table/index.js';
 import { addColumnsManagement } from './factory/table/plugins/columns-management.js';
 import { addFilterToTheTable } from './factory/table/plugins/filter.js';
+import { addOfflineFilterToTheTable } from './factory/table/plugins/filter-offline.js';
 import { addEventToCopyTbodyCell } from './factory/table/plugins/events.js';
 import { showCaption } from './factory/table/plugins/caption.js';
 
@@ -28,9 +29,24 @@ const theadNames = [
   "Enlace",
 ]
 
+const tableKeys = [
+  "buyAmzDate",
+  "deliveryDateUsa", 
+  "deliveryDateBqto", 
+  "name", 
+  "weight", 
+  "dimensions", 
+  "volumetricWeight", 
+  "basePrice", 
+  "taxAmz", 
+  "deliveryAmz", 
+  "deliveryOwc",
+  "finalPrice", 
+  "link",
+];
 
 
-
+function serverDataTreatment(databaseData){ return databaseData }
 
 const $table = createBasicTable("amz-buy-table", theadNames, tableData, tableData);
 
@@ -38,6 +54,7 @@ const $table = createBasicTable("amz-buy-table", theadNames, tableData, tableDat
 
 document.getElementById("main").append($table);
 
+addOfflineFilterToTheTable($table, tableKeys, tableData, serverDataTreatment);
 
 
 

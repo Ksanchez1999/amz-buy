@@ -1,68 +1,104 @@
-input{
-  /* --- GENERAL --- */
-  --input-border-style: solid;
-	--input-border-width: 1px;
-  --input-border-radius: 4px;
-  --input-font-size: 0.85em;
+/* ========================================
+               VARIABLES
+======================================== */
+/*ALL INPUTS*/
+.input {
+  --input-bg-color: #fff;
+  --input-border-color: #ccc;
+}
 
-  /* --- TEXT --- */
-  --input-height: 33px;
-  --input-padding: 6px 12px;
+/*INPUT CHECKBOX*/
+.input-checkbox {
+  --checkbox-bg-checked: #007bff;
+  --checkbox-border-checked: #007bff;
+}
 
-  /* --- CHECKBOX --- */
-  --checkbox-width: 24px;
-  --checkbox-height: 24px;
-  --checkbox-bg-color: #fff;
-  --checkbox-bg-color-checked: #007bff;
-  --checkbox-border-color-checked: #007bff;
+/*INPUT RADIO*/
+.input-radio {
+  --radio-bg-checked: #007bff;
+  --radio-border-checked: #007bff;
 }
 
 
-/* --- TEXT --- */
-input[type="text"] {
-  height: var(--input-height);
+
+
+
+
+
+
+
+
+/* ========================================
+               ALL INPUTS
+======================================== */
+.input {
+  display: inline-block;
+  height: 2em;
   font-family: inherit;
-  font-size: var(--input-font-size);
-  padding: var(--input-padding);
-	border-width: var(--input-border-width);
-	border-style: var(--input-border-style);
-  border-radius: var(--input-border-radius);
+  background-color: var(--input-bg-color);
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--input-border-color);
+  border-radius: 0.25em;
+}
+
+
+/* ========================================
+   INPUT: TEXT, PASSWORD, EMAIL, NUMBER
+======================================== */
+.input-text, 
+.input-password,
+.input-email,
+.input-number {
+  font-size: 1em;
+  padding: 0.25em 0.70em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
  
-input[type="text"]:focus {
+.input-text:focus {
   outline: none;
+  border-width: 2px;
 }
 
 
+/* ========================================
+             INPUT DATE
+======================================== */
+.input-date {
+  font-family: inherit;
+  font-size: 1em;
+  outline: none;
+}
 
-/* --- CHECKBOX --- */
-input[type="checkbox"] {
+.input-date:focus {
+  border-width: 2px;
+}
+
+
+/* ========================================
+             INPUT CHECKBOX
+======================================== */
+.input-checkbox {
   appearance: none;
   -webkit-appearance: none;
-  width: var(--checkbox-width);
-  height: var(--checkbox-height);
   cursor: pointer;
-  background-color: var(--checkbox-bg-color);
-  border-width: var(--input-border-width);
-  border-style: var(--input-border-style);
-  border-color: #ccc;
-  border-radius: var(--input-border-radius);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   vertical-align: middle;
+  width: 1.5em;
+  height: 1.5em;
   transition: background-color 0.2s, border-color 0.2s;
 }
 
-input[type="checkbox"]:checked {
-  background-color: var(--checkbox-bg-color-checked);
-  border-color: var(--checkbox-border-color-checked);
+.input-checkbox:checked {
+  background-color: var(--checkbox-bg-checked);
+  border-color: var(--checkbox-border-checked);
 }
 
-input[type="checkbox"]:checked::after {
+.input-checkbox:checked::after {
   content: "";
   width: 25%;
   height: 50%;
@@ -72,7 +108,45 @@ input[type="checkbox"]:checked::after {
   margin-top: -10%; 
 }
 
-input[type="checkbox"]:focus {
+.input-checkbox:focus {
   outline: 2px solid rgba(0, 123, 255, 0.25);
   outline-offset: 2px;
 }
+
+
+/* ========================================
+           INPUT RADIO BUTTON
+======================================== */
+.input-radio {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 50%;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.input-radio:checked {
+  background-color: var(--radio-bg-checked);
+  border-color: var(--radio-border-checked);
+}
+
+.input-radio:checked::after {
+  content: "";
+  width: 40%;
+  height: 40%;
+  background-color: white;
+  border-radius: 50%;
+}
+
+.input-radio:focus {
+  outline: 2px solid rgba(0, 123, 255, 0.25);
+  outline-offset: 2px;
+}
+
+

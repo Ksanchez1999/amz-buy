@@ -1,40 +1,53 @@
 /* --- VARIABLES --- */
-button {
-  --btn-action-1-bg-color: #494bb5;
-  --btn-action-1-padding: 6px 14px;
-  --btn-action-1-border-radius: 4px;
-  --btn-action-1-font-size: 0.85rem;
-  --btn-action-1-font-weight: 600;
-  --btn-action-1-color: #000;
-  --btn-action-1-hover-bg-color: #383a95;
+.btn {
+  --btn-bg-color: #fdfdfd;
+  --btn-border: 1px solid #000;
+  --btn-color: #000;
+  --btn-hover-bg-color: #c0c0c0;
 }
 
-
-
 /* --- BASIC STYLES --- */
-button {
+.btn {
   max-width: 100%;
-  background: var(--btn-action-1-bg-color);
-  padding: var(--btn-action-1-padding);
-  border-radius: var(--btn-action-1-border-radius);
-  border: none;
+  background: var(--btn-bg-color);
+  padding: 0.25em 0.9em;
+  border-radius: 0.25em;
+  border: var(--btn-border);
+  font-size: 1em;
   font-family: inherit;
-  font-size: var(--btn-action-1-font-size);
-  font-weight: var(--btn-action-1-font-weight);
-  color: var(--btn-action-1-color);
+  font-weight: 600;
+  color: var(--btn-color);
   white-space: nowrap;
   text-overflow: ellipsis;
   cursor: pointer;
   transition: all 0.2s;
 }
 
-button:hover {
-  background: var(--btn-action-1-hover-bg-color);
+.btn:hover {
+  background: var(--btn-hover-bg-color);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(73, 75, 181, 0.3);
+  box-shadow: 0 0.25em 0.75em rgba(73, 75, 181, 0.3);
 }
 
-button:active {
+.btn:active {
   transform: translateY(1px);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0.08em 0.25em rgba(0, 0, 0, 0.2);
 }
+
+
+/* --- BTN GREEN --- */
+.btn.btn-black {
+  --btn-bg-color: #90d4aa;
+  --btn-color: #000;
+  --btn-hover-bg-color: #8affb8;
+}
+
+/* --- BTN PURPLE --- */
+.btn.btn-purple {
+  --btn-bg-color: #494bb5;
+  --btn-color: #f4f4f4;
+  --btn-hover-bg-color: #383a95;
+}
+
+
+

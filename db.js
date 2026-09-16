@@ -72,7 +72,6 @@ export const tableData = [
     "1.8",
     "https://www.amazon.com/-/es/dp/B0FZG6MCFY?ref_=ppx_oui_title_mob_b_fed_asin_title_0_0",
   ),
-
 ];
 
 
