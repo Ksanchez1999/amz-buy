@@ -3,16 +3,21 @@
   padding: 0;
 }
 
-
+body{
+  font-size: 16px;
+}
 
 #main{
   background-color: #111622;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   z-index: 1;
 
   width: 100vw;
   height: 100vh;
-  padding: 50px;
+  padding: 1em 1em;
 }
 
 
@@ -37,3 +42,45 @@
   display: block;
   max-width: 150px;
 }
+
+
+
+
+.container-choise-table{
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+
+.btn {
+  font-size: 1.8em;
+  padding: 0.55em 1.5em;
+}
+
+
+
+
+
+
+
+
+@media (max-width: 480px) {
+
+  body{
+    font-size: 10px;
+  }
+
+  .table-container {
+    --container-font-size: 10px;
+  }
+
+
+}
+
+
+
+
+
+
+
