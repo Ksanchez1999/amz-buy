@@ -75,6 +75,22 @@ export const tableImportsData = [
     "1.8",
     "https://www.amazon.com/-/es/dp/B0FZG6MCFY?ref_=ppx_oui_title_mob_b_fed_asin_title_0_0",
   ),
+
+    new TableImportsDataItem(
+    "08/09/2026",
+    "17/09/2026",
+    "23/09/2026",
+    "OLTEANP Inversor de Potencia de 500 W, 12V CC a 110V/120V CA Inversor con Pantalla LCD, 2 Salidas AC, Puerto Tipo-C de 36W, Puerto USB de 5V/3A, Convertidor de Energía para Automóvil para Camión",
+    "2.2", 
+    "10 x 6 x 3", 
+    "1.1", 
+    "38.69",
+    "2.8",
+    "0",
+    "11",
+    "https://www.amazon.com/dp/B0CQY6DQT9?ref_=ppx_printOD_title_dt_b_fed_asin_title_0_0&th=1",
+  ),
+
 ];
 
 
